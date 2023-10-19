@@ -1,7 +1,7 @@
-package br.com.carstore.servelet;
+package br.com.carstore.servlet;
 
-import br.com.carstore.dao.CarDao;
-import br.com.carstore.model.Car;
+import dao.CarDao;
+import model.Car;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,21 +10,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/create-car")
-public class createcarservelet  extends HttpServlet {
+  @WebServlet("/create-car")
+public class CreateCarServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        String carId = request.getParameter("id");
         String carName = request.getParameter("car-name");
 
         Car car = new Car(carName);
 
-        CarDao carDao = new CarDao();
+        new CarDao().createCar(car);
 
-        carDao.createCar(car);
+        if (carId.isBlank()) {
 
-        System.out.println(carName);
+            CarDao.createCar(car);
 
-        request.getRequestDispatcher("index.html").forward(request, response);
+        } else {
+
+            CarDao.updateCar(car);
+        }
+
+        response.sendRedirect("/find-all-cars");
+
+
+
     }
+
 }
