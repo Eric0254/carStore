@@ -19,15 +19,15 @@ public class CreateCarServlet extends HttpServlet {
 
         Car car = new Car(carName);
 
-        new CarDao().createCar(car);
+        CarDao carDao = new CarDao();
 
         if (carId.isBlank()) {
 
-            CarDao.createCar(car);
+            carDao.createCar(car);
 
         } else {
 
-            CarDao.updateCar(car);
+            carDao.updateCar(car);
         }
 
         response.sendRedirect("/find-all-cars");
